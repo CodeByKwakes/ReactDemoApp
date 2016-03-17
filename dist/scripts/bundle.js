@@ -47970,7 +47970,8 @@ var AuthorForm = React.createClass({displayName: "AuthorForm",
               className: "form-control", 
               placeholder: "First Name", 
               ref: "firstName", 
-              value: ""}), 
+              onChange: this.props.onChange, 
+              value: this.props.author.firstName}), 
         React.createElement("br", null), 
 
         React.createElement("label", {htmlFor: "lastName"}, "Last Name"), 
@@ -47979,10 +47980,11 @@ var AuthorForm = React.createClass({displayName: "AuthorForm",
               className: "form-control", 
               placeholder: "Last Name", 
               ref: "lastName", 
-              value: ""}), 
+              onChange: this.props.onChange, 
+              value: this.props.author.lastName}), 
         React.createElement("br", null), 
 
-        React.createElement("label", {type: "submit", value: "save", className: "btn btn-default"})
+        React.createElement("input", {type: "submit", value: "Save", className: "btn btn-default"})
       )
     );
   }
@@ -48068,11 +48070,24 @@ var React = require('react');
 var AuthorForm = require('./authorForm');
 
 var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
-  
+  getInitialState: function(){
+    return {
+      author: { id: '', firstName: '', lastName: ''}
+    };
+  },
+
+  setAuthorState: function(event) {
+    var field = event.target.name;
+    var value = event.target.value;
+    this.state.author[field] = value;
+    return this.setState({author: this.state.author});
+  },
 
   render: function() {
     return (
-      React.createElement(AuthorForm, null)
+      React.createElement(AuthorForm, {
+          author: this.state.author, 
+          onChange: this.setAuthorState})
     );
   }
 });
